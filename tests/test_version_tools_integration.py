@@ -27,7 +27,7 @@ import sys
 sys.path.insert(0, sys.argv[1])
 from sd_dynamic_prompts import version_tools as vt
 
-commit = "fe942beb3381570e4e5f903b9904413d57fcb409"
+commit = "d8aa212ca231fbd72162ca104acfb26f15c37d5d"
 requirement = "dynamicprompts @ git+https://github.com/HQJ00076/dynamicprompts.git@" + commit
 assert importlib.metadata.version("dynamicprompts") == "0.31.0"
 assert importlib.metadata.distribution("dynamicprompts").read_text("direct_url.json") is None
