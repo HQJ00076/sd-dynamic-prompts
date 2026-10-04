@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import logging
 
+from dynamicprompts.enums import SamplingMethod
 from dynamicprompts.generators import (
     BatchedCombinatorialPromptGenerator,
     CombinatorialPromptGenerator,
@@ -16,6 +17,11 @@ from dynamicprompts.parser.parse import default_parser_config
 from sd_dynamic_prompts.frozenprompt_generator import FrozenPromptGenerator
 
 logger = logging.getLogger(__name__)
+
+SAMPLING_METHODS = {
+    "Random": SamplingMethod.RANDOM,
+    "Decay Random": SamplingMethod.DECAY_RANDOM,
+}
 
 
 class GeneratorBuilder:
@@ -46,6 +52,7 @@ class GeneratorBuilder:
         self._ignore_whitespace = ignore_whitespace
         self._unlink_seed_from_prompt = False
         self._seed = -1
+        self._sampling_method = SamplingMethod.RANDOM
         self._context = None
         self._parser_config = parser_config
 
@@ -130,6 +137,10 @@ class GeneratorBuilder:
         self._seed = seed
         return self
 
+    def set_sampling_method(self, sampling_method: str = "Random"):
+        self._sampling_method = SAMPLING_METHODS[sampling_method]
+        return self
+
     def set_freeze_prompt(self, should_freeze: bool):
         self._should_freeze_prompt = should_freeze
         return self
@@ -210,6 +221,7 @@ class GeneratorBuilder:
             parser_config=self._parser_config,
             unlink_seed_from_prompt=self._unlink_seed_from_prompt,
             ignore_whitespace=self._ignore_whitespace,
+            default_sampling_method=self._sampling_method,
         )
 
     def create_jinja_generator(self, p) -> PromptGenerator:

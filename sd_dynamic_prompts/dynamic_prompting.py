@@ -17,7 +17,7 @@ from modules.shared import opts
 
 from sd_dynamic_prompts import __version__, callbacks
 from sd_dynamic_prompts.element_ids import make_element_id
-from sd_dynamic_prompts.generator_builder import GeneratorBuilder
+from sd_dynamic_prompts.generator_builder import SAMPLING_METHODS, GeneratorBuilder
 from sd_dynamic_prompts.helpers import (
     generate_prompts,
     get_seeds,
@@ -145,6 +145,13 @@ class Script(scripts.Script):
                     )
 
                 with gr.Group(visible=correct_lib_version):
+                    sampling_method = gr.Radio(
+                        choices=list(SAMPLING_METHODS),
+                        value="Random",
+                        label="Sampling Method",
+                        info="Decay Random reduces recent repeats in single wildcards. Combinatorial and Jinja2 modes use their existing sampling.",
+                        elem_id=make_element_id("sampling-method"),
+                    )
                     is_combinatorial = gr.Checkbox(
                         label="Combinatorial generation",
                         value=False,
@@ -340,6 +347,7 @@ class Script(scripts.Script):
             max_generations,
             magic_model,
             magic_blocklist_regex,
+            sampling_method,
         ]
 
     def process(
@@ -363,6 +371,7 @@ class Script(scripts.Script):
         max_generations: int,
         magic_model: str | None,
         magic_blocklist_regex: str | None,
+        sampling_method: str = "Random",
     ):
         if not is_enabled:
             logger.debug("Dynamic prompts disabled - exiting")
@@ -454,6 +463,7 @@ class Script(scripts.Script):
                 .set_is_dummy(False)
                 .set_unlink_seed_from_prompt(unlink_seed_from_prompt)
                 .set_seed(original_seed)
+                .set_sampling_method(sampling_method)
                 .set_context(p)
                 .set_freeze_prompt(should_freeze_prompt(p))
             )

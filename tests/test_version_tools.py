@@ -8,7 +8,7 @@ import pytest
 
 from sd_dynamic_prompts import version_tools as vt
 
-COMMIT = "5ad48daae5d5e5678e18c5a9cf3f38d68f75ddf6"
+COMMIT = "fe942beb3381570e4e5f903b9904413d57fcb409"
 REPOSITORY = "https://github.com/HQJ00076/dynamicprompts.git"
 GIT_REQUIREMENT = f"dynamicprompts[attentiongrabber,magicprompt] @ git+{REPOSITORY}@{COMMIT}"
 
@@ -185,3 +185,8 @@ def test_dependency_configuration_pins_fork_and_keeps_extras():
     assert requirement.url == f"git+{REPOSITORY}@{COMMIT}"
     assert requirement.extras == {"attentiongrabber", "magicprompt"}
     assert "send2trash==2.1.0" in requirements
+
+
+def test_previous_library_commit_is_not_satisfied(installed_metadata):
+    installed_metadata[1].return_value = json.dumps(provenance(commit="5ad48daae5d5e5678e18c5a9cf3f38d68f75ddf6"))
+    assert not vt.get_install_result(GIT_REQUIREMENT).correct

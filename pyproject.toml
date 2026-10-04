@@ -1,7 +1,7 @@
 [project]
 dependencies = [
     "send2trash==2.1.0",
-    "dynamicprompts[attentiongrabber,magicprompt] @ git+https://github.com/HQJ00076/dynamicprompts.git@5ad48daae5d5e5678e18c5a9cf3f38d68f75ddf6",
+    "dynamicprompts[attentiongrabber,magicprompt] @ git+https://github.com/HQJ00076/dynamicprompts.git@fe942beb3381570e4e5f903b9904413d57fcb409",
 ]
 
 [tool.pytest.ini_options]
