@@ -8,7 +8,7 @@ import pytest
 
 from sd_dynamic_prompts import version_tools as vt
 
-COMMIT = "55b7a372c3bf6ad32eb9716f2562b3747432f06b"
+COMMIT = "5ad48daae5d5e5678e18c5a9cf3f38d68f75ddf6"
 REPOSITORY = "https://github.com/HQJ00076/dynamicprompts.git"
 GIT_REQUIREMENT = f"dynamicprompts[attentiongrabber,magicprompt] @ git+{REPOSITORY}@{COMMIT}"
 
